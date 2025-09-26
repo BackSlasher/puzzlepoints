@@ -53,6 +53,9 @@
             padding: 1rem 0;
             text-align: center;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .nav .btn {
@@ -166,14 +169,103 @@
         }
 
         @media (max-width: 768px) {
+            .container {
+                margin-top: 1rem;
+                margin-bottom: 1rem;
+            }
+
+            .header {
+                padding: 2rem 1rem 1.5rem;
+            }
+
             .header h1 {
                 font-size: 2rem;
+            }
+
+            .nav {
+                padding: 0.75rem 0;
+                flex-wrap: wrap;
+                justify-content: center;
             }
 
             .nav .btn {
                 margin: 0.25rem;
                 padding: 0.5rem 1rem;
+                font-size: 0.85rem;
+                flex: 1 1 auto;
+                max-width: 120px;
+                text-align: center;
+            }
+
+            .main-content {
+                padding: 1rem;
+            }
+
+            .card {
+                margin-bottom: 1rem;
+            }
+
+            .table-responsive {
+                font-size: 0.85rem;
+            }
+
+            .table th,
+            .table td {
+                padding: 0.5rem 0.25rem;
+                vertical-align: middle;
+            }
+
+            .game-body {
+                font-size: 12px;
+                padding: 0.5rem;
+                max-width: 200px;
+                overflow-x: auto;
+            }
+
+            .badge {
+                font-size: 0.7rem;
+            }
+
+            .btn-sm {
+                font-size: 0.7rem;
+                padding: 0.25rem 0.5rem;
+            }
+
+            .footer {
+                padding: 1rem;
                 font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .nav .btn {
+                font-size: 0.8rem;
+                padding: 0.4rem 0.8rem;
+                max-width: 100px;
+            }
+
+            .nav .btn i {
+                display: block;
+                margin-bottom: 0.25rem;
+            }
+
+            .table th,
+            .table td {
+                padding: 0.4rem 0.2rem;
+                font-size: 0.8rem;
+            }
+
+            .game-body {
+                font-size: 11px;
+                max-width: 150px;
+            }
+
+            .row.g-3 > * {
+                margin-bottom: 0.75rem;
             }
         }
     </style>
