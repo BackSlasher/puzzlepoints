@@ -12,7 +12,7 @@ ob_start();
         </h3>
         <form method="GET">
             <div class="row g-3">
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <label for="game" class="form-label">Game Type:</label>
                     <select id="game" name="game" class="form-select">
                         <option value="">All Games</option>
@@ -23,7 +23,7 @@ ob_start();
                         <?php endforeach; ?>
                     </select>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <label for="user" class="form-label">User:</label>
                     <select id="user" name="user" class="form-select">
                         <option value="">All Users</option>
@@ -34,11 +34,7 @@ ob_start();
                         <?php endforeach; ?>
                     </select>
                 </div>
-                <div class="col-md-3">
-                    <label for="puzzle" class="form-label">Puzzle Number:</label>
-                    <input type="text" id="puzzle" name="puzzle" class="form-control" value="<?= htmlspecialchars($puzzleFilter) ?>" placeholder="e.g. 1234 or 2025-01-15" <?= empty($gameFilter) ? 'disabled' : '' ?>>
-                </div>
-                <div class="col-md-3 d-flex align-items-end">
+                <div class="col-md-4 d-flex align-items-end">
                     <button type="submit" class="btn btn-primary">
                         <i class="bi bi-search"></i> Filter
                     </button>
@@ -91,31 +87,6 @@ ob_start();
     </div>
 <?php endif; ?>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const gameSelect = document.getElementById('game');
-    const puzzleInput = document.getElementById('puzzle');
-
-    function togglePuzzleInput() {
-        if (gameSelect.value) {
-            puzzleInput.disabled = false;
-            puzzleInput.style.backgroundColor = '';
-            puzzleInput.style.color = '';
-        } else {
-            puzzleInput.disabled = true;
-            puzzleInput.style.backgroundColor = '#f5f5f5';
-            puzzleInput.style.color = '#999';
-            puzzleInput.value = '';
-        }
-    }
-
-    // Set initial state
-    togglePuzzleInput();
-
-    // Listen for changes
-    gameSelect.addEventListener('change', togglePuzzleInput);
-});
-</script>
 
 <?php
 $content = ob_get_clean();
