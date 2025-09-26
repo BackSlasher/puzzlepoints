@@ -221,7 +221,7 @@
                 <?= $content ?>
             </main>
             <footer class="footer">
-                By <a href="https://backslasher.net"><i class="bi bi-person-circle"></i> (\) Backslasher</a> |
+                By <a href="https://backslasher.net"> (\) Backslasher</a> |
                 <a href="https://github.com/BackSlasher/puzzlepoints"><i class="bi bi-github"></i> Contribute on GitHub</a>
             </footer>
         </div>
