@@ -9,5 +9,6 @@ enum GameType: string
     case STRANDS = 'strands';
     case MINI_CROSSWORD = 'mini_crossword';
     case SPELLING_BEE = 'spelling_bee';
+    case BRACKET_CITY = 'bracket_city';
     case OTHER = 'other';
 }

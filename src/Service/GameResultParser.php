@@ -3,23 +3,63 @@
 namespace App\Service;
 
 use App\Entity\GameType;
+use App\Entity\PuzzleInput;
+use Doctrine\ORM\EntityManager;
 
 class GameResultParser
 {
-    public function parseGameResult(string $input): ?array
+    private EntityManager $entityManager;
+
+    public function __construct(EntityManager $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
+    public function parseGameResult(string $input, string $displayname = null, string $ipAddress = null, string $userAgent = null): ?array
     {
         $lines = array_filter(array_map('trim', explode("\n", $input)));
 
+        // Create log entry
+        $puzzleInputLog = new PuzzleInput();
+        $puzzleInputLog->setRawInput($input)
+                      ->setSubmittedByDisplayname($displayname)
+                      ->setIpAddress($ipAddress)
+                      ->setUserAgent($userAgent);
+
         if (empty($lines)) {
+            $puzzleInputLog->setParsedSuccessfully(false)
+                          ->setParsingError('Input is empty');
+            $this->entityManager->persist($puzzleInputLog);
+            $this->entityManager->flush();
             return null;
         }
 
         // Try to parse different game types
-        $result = $this->parseWordle($lines) ??
-                 $this->parseConnections($lines) ??
-                 $this->parseStrands($lines) ??
-                 $this->parseMiniCrossword($lines) ??
-                 $this->parseSpellingBee($lines);
+        try {
+            $result = $this->parseWordle($lines) ??
+                     $this->parseConnections($lines) ??
+                     $this->parseStrands($lines) ??
+                     $this->parseMiniCrossword($lines) ??
+                     $this->parseSpellingBee($lines) ??
+                     $this->parseBracketCity($lines);
+
+            if ($result) {
+                $puzzleInputLog->setParsedSuccessfully(true)
+                              ->setDetectedGameType($result['gameType'])
+                              ->setDetectedPuzzleNumber($result['puzzleNumber'])
+                              ->setDetectedScore($result['score']);
+            } else {
+                $puzzleInputLog->setParsedSuccessfully(false)
+                              ->setParsingError('No matching game pattern found');
+            }
+        } catch (\Exception $e) {
+            $puzzleInputLog->setParsedSuccessfully(false)
+                          ->setParsingError('Parsing exception: ' . $e->getMessage());
+            $result = null;
+        }
+
+        $this->entityManager->persist($puzzleInputLog);
+        $this->entityManager->flush();
 
         return $result;
     }
@@ -133,6 +173,52 @@ class GameResultParser
                             'body' => implode("\n", $lines)
                         ];
                     }
+                }
+            }
+        }
+        return null;
+    }
+
+    private function parseBracketCity(array $lines): ?array
+    {
+        foreach ($lines as $line) {
+            // Bracket City pattern: "[Bracket City]"
+            if (preg_match('/^\[Bracket City\]/i', $line)) {
+                // Look for date in next lines (e.g., "September 3, 2025")
+                $puzzleDate = null;
+                $score = null;
+
+                foreach ($lines as $checkLine) {
+                    // Parse date line (e.g., "September 3, 2025")
+                    if (preg_match('/^(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d+),\s+(\d{4})$/i', $checkLine, $dateMatches)) {
+                        $month = date('m', strtotime($dateMatches[1]));
+                        $day = str_pad($dateMatches[2], 2, '0', STR_PAD_LEFT);
+                        $year = $dateMatches[3];
+                        $puzzleDate = "$year-$month-$day";
+                    }
+
+                    // Parse score line (e.g., "Total Score: 96.0")
+                    if (preg_match('/Total\s+Score:\s+([0-9.]+)/i', $checkLine, $scoreMatches)) {
+                        $score = (int)round((float)$scoreMatches[1]); // Convert to integer for consistency
+                    }
+                }
+
+                if ($puzzleDate && $score !== null) {
+                    // Remove URLs from the body for display
+                    $cleanedLines = [];
+                    foreach ($lines as $bodyLine) {
+                        // Skip lines that are URLs (start with http)
+                        if (!preg_match('/^https?:\/\//', $bodyLine)) {
+                            $cleanedLines[] = $bodyLine;
+                        }
+                    }
+
+                    return [
+                        'gameType' => GameType::BRACKET_CITY,
+                        'puzzleNumber' => $puzzleDate,
+                        'score' => $score, // Higher is better
+                        'body' => implode("\n", $cleanedLines) // URLs removed
+                    ];
                 }
             }
         }

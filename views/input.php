@@ -38,13 +38,14 @@ Wordle 1,234 4/6
 </form>
 
 <div style="margin-top: 40px;">
-    <h3>Supported Game Formats:</h3>
+    <h3>Supported Games:</h3>
     <ul>
-        <li><strong>Wordle:</strong> "Wordle 1,234 4/6" followed by emoji grid</li>
-        <li><strong>Connections:</strong> "Connections Puzzle #123" followed by result grid</li>
-        <li><strong>Strands:</strong> "Strands #123" followed by result with hint count</li>
-        <li><strong>Mini Crossword:</strong> "Mini Crossword" with completion time</li>
-        <li><strong>Spelling Bee:</strong> "Spelling Bee" with point total</li>
+        <li>Wordle</li>
+        <li>Connections</li>
+        <li>Strands</li>
+        <li>Mini Crossword</li>
+        <li>Spelling Bee</li>
+        <li>Bracket City</li>
     </ul>
 </div>
 

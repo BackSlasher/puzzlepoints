@@ -13,7 +13,7 @@ class InputController
     public function __construct(EntityManager $entityManager)
     {
         $this->entityManager = $entityManager;
-        $this->parser = new GameResultParser();
+        $this->parser = new GameResultParser($entityManager);
     }
 
     public function show(): void
@@ -54,8 +54,17 @@ class InputController
             $this->entityManager->persist($user);
         }
 
-        // Parse game result
-        $parsedResult = $this->parser->parseGameResult($gameInput);
+        // Get client info for logging
+        $ipAddress = $_SERVER['REMOTE_ADDR'] ?? null;
+        $userAgent = $_SERVER['HTTP_USER_AGENT'] ?? null;
+
+        // Parse game result with logging
+        $parsedResult = $this->parser->parseGameResult(
+            $gameInput,
+            $displayname,
+            $ipAddress,
+            $userAgent
+        );
 
         if (!$parsedResult) {
             $this->render('input', [

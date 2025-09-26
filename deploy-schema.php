@@ -34,23 +34,17 @@ try {
 
     // Check if tables already exist
     echo "Checking existing schema...\n";
-    try {
-        $existingSql = $schemaTool->getUpdateSchemaSql($metadatas, true);
-        if (empty($existingSql)) {
-            echo "✓ Schema is up to date\n";
-        } else {
-            echo "Schema needs updates:\n";
-            foreach ($existingSql as $sql) {
-                echo "  - " . substr($sql, 0, 50) . "...\n";
-            }
-            echo "\nUpdating schema...\n";
-            $schemaTool->updateSchema($metadatas, true);
-            echo "✓ Schema updated successfully\n";
+    $existingSql = $schemaTool->getUpdateSchemaSql($metadatas, true);
+    if (empty($existingSql)) {
+        echo "✓ Schema is up to date\n";
+    } else {
+        echo "Schema needs updates:\n";
+        foreach ($existingSql as $sql) {
+            echo "  - " . substr($sql, 0, 50) . "...\n";
         }
-    } catch (\Exception $e) {
-        echo "Tables don't exist, creating new schema...\n";
-        $schemaTool->createSchema($metadatas);
-        echo "✓ Schema created successfully\n";
+        echo "\nUpdating schema...\n";
+        $schemaTool->updateSchema($metadatas, true);
+        echo "✓ Schema updated successfully\n";
     }
 
     echo "\n✓ Database setup complete!\n";

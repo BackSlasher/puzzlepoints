@@ -48,6 +48,8 @@ ob_start();
                             hints
                         <?php elseif ($gameType->value === 'mini_crossword'): ?>
                             <?= gmdate("i:s", $result->getScore()) ?>
+                        <?php elseif ($gameType->value === 'bracket_city'): ?>
+                            points
                         <?php endif; ?>
                     </td>
                     <td><?= $result->getCreatedAt()->format('g:i A') ?></td>
