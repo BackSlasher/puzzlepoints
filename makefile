@@ -35,6 +35,7 @@ deploy:
 	@echo "Host: $(HOST)"
 	@echo "Directory: $(FTP_DIRECTORY)"
 	@rsync -avz --delete \
+		--exclude='.sl' \
 		--exclude='.git' \
 		--exclude='var/data.db*' \
 		--exclude='.env.local' \
