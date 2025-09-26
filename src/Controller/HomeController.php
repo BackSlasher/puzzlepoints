@@ -13,8 +13,8 @@ class HomeController
 
     public function index(): void
     {
-        // Redirect to input page for now
-        header('Location: /input');
+        // Redirect to puzzles page
+        header('Location: /puzzles');
         exit;
     }
 }

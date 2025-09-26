@@ -54,10 +54,7 @@ ob_start();
                     </td>
                     <td><?= $result->getCreatedAt()->format('g:i A') ?></td>
                     <td>
-                        <details>
-                            <summary>View</summary>
-                            <div class="game-body"><?= htmlspecialchars($result->getBody()) ?></div>
-                        </details>
+                        <div class="game-body"><?= htmlspecialchars($result->getBody()) ?></div>
                     </td>
                 </tr>
                 <?php $rank++; ?>

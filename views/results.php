@@ -69,10 +69,7 @@ ob_start();
                     </td>
                     <td><?= $result->getScore() ?></td>
                     <td>
-                        <details>
-                            <summary>View Result</summary>
-                            <div class="game-body"><?= htmlspecialchars($result->getBody()) ?></div>
-                        </details>
+                        <div class="game-body"><?= htmlspecialchars($result->getBody()) ?></div>
                     </td>
                 </tr>
             <?php endforeach; ?>

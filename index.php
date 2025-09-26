@@ -36,6 +36,12 @@ switch ($request) {
         $controller->index();
         break;
 
+    case '/puzzles':
+        require_once __DIR__ . '/src/Controller/PuzzlesController.php';
+        $controller = new PuzzlesController($entityManager);
+        $controller->index();
+        break;
+
     case '/logout':
         session_start();
         session_destroy();

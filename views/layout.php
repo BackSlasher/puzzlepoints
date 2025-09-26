@@ -125,6 +125,7 @@
     </div>
     <nav class="nav">
         <a href="/input">Submit Results</a>
+        <a href="/puzzles">Puzzles</a>
         <a href="/results">All Results</a>
     </nav>
     <main>
