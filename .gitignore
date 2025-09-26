@@ -32,3 +32,6 @@ Thumbs.db
 # Backup files
 *.bak
 *.backup
+
+# Keep public folder for reference but don't deploy
+/public/
