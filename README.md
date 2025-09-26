@@ -1,6 +1,8 @@
 # PuzzlePoints
 Post your puzzle scores and compare with your friends
 
+![](docs/preview.png)
+
 ## Usage
 Post your puzzle result (from the puzzle's "share" function), compare with others.
 
