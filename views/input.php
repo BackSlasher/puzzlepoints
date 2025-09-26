@@ -13,8 +13,8 @@ ob_start();
     <div class="form-group">
         <label for="displayname">Display Name:</label>
         <?php if ($user ?? false): ?>
-            <input type="text" id="displayname" name="displayname" value="<?= htmlspecialchars($user->getDisplayname()) ?>" readonly style="background: #f5f5f5;">
-            <small>Logged in as <?= htmlspecialchars($user->getDisplayname()) ?>. <a href="/logout">Change user</a></small>
+            <input type="text" id="displayname" name="displayname" value="<?= htmlspecialchars($user->getDisplayname()) ?>" required>
+            <small>Welcome back, <?= htmlspecialchars($user->getDisplayname()) ?>! <a href="/logout">Switch user</a></small>
         <?php else: ?>
             <input type="text" id="displayname" name="displayname" value="<?= htmlspecialchars($displayname ?? '') ?>" required>
             <small>Enter your display name (no password required)</small>

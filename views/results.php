@@ -33,7 +33,7 @@ ob_start();
             </div>
             <div>
                 <label for="puzzle">Puzzle Number:</label>
-                <input type="text" id="puzzle" name="puzzle" value="<?= htmlspecialchars($puzzleFilter) ?>" placeholder="e.g. 1234 or 2025-01-15">
+                <input type="text" id="puzzle" name="puzzle" value="<?= htmlspecialchars($puzzleFilter) ?>" placeholder="e.g. 1234 or 2025-01-15" <?= empty($gameFilter) ? 'disabled' : '' ?>>
             </div>
             <div>
                 <button type="submit">Filter</button>
@@ -79,6 +79,32 @@ ob_start();
         </tbody>
     </table>
 <?php endif; ?>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const gameSelect = document.getElementById('game');
+    const puzzleInput = document.getElementById('puzzle');
+
+    function togglePuzzleInput() {
+        if (gameSelect.value) {
+            puzzleInput.disabled = false;
+            puzzleInput.style.backgroundColor = '';
+            puzzleInput.style.color = '';
+        } else {
+            puzzleInput.disabled = true;
+            puzzleInput.style.backgroundColor = '#f5f5f5';
+            puzzleInput.style.color = '#999';
+            puzzleInput.value = '';
+        }
+    }
+
+    // Set initial state
+    togglePuzzleInput();
+
+    // Listen for changes
+    gameSelect.addEventListener('change', togglePuzzleInput);
+});
+</script>
 
 <?php
 $content = ob_get_clean();

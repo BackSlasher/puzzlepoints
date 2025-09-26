@@ -36,6 +36,12 @@ switch ($request) {
         $controller->index();
         break;
 
+    case '/logout':
+        session_start();
+        session_destroy();
+        header('Location: /input');
+        exit;
+
     default:
         // Check if it's a game-specific results page like /results/wordle/2025-01-15
         if (preg_match('/^\/results\/([^\/]+)\/([^\/]+)$/', $request, $matches)) {
