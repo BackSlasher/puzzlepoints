@@ -85,25 +85,40 @@ class GameResultParser
 
     private function parseConnections(array $lines): ?array
     {
+        $foundConnections = false;
+        $puzzleNumber = null;
+
         foreach ($lines as $line) {
-            // Connections pattern: "Connections Puzzle #123"
-            if (preg_match('/^Connections\s+Puzzle\s+#([0-9]+)/i', $line, $matches)) {
+            // Look for "Connections" header
+            if (preg_match('/^Connections$/i', $line)) {
+                $foundConnections = true;
+            }
+            // Look for puzzle number in formats like "Puzzle #123" or "#123"
+            if (preg_match('/^(?:Puzzle\s+)?#([0-9]+)$/i', $line, $matches)) {
                 $puzzleNumber = $matches[1];
-
-                // Count mistakes (🟨 = mistake, 🟩 = correct)
-                $mistakes = 0;
-                foreach ($lines as $resultLine) {
-                    $mistakes += substr_count($resultLine, '🟨');
-                }
-
-                return [
-                    'gameType' => GameType::CONNECTIONS,
-                    'puzzleNumber' => $puzzleNumber,
-                    'score' => $mistakes, // Lower is better
-                    'body' => implode("\n", $lines)
-                ];
+            }
+            // Also handle single line format "Connections Puzzle #123"
+            if (preg_match('/^Connections\s+Puzzle\s+#([0-9]+)/i', $line, $matches)) {
+                $foundConnections = true;
+                $puzzleNumber = $matches[1];
             }
         }
+
+        if ($foundConnections && $puzzleNumber) {
+            // Count mistakes (🟨 = mistake, 🟩 = correct)
+            $mistakes = 0;
+            foreach ($lines as $resultLine) {
+                $mistakes += substr_count($resultLine, '🟨');
+            }
+
+            return [
+                'gameType' => GameType::CONNECTIONS,
+                'puzzleNumber' => $puzzleNumber,
+                'score' => $mistakes, // Lower is better
+                'body' => implode("\n", $lines)
+            ];
+        }
+
         return null;
     }
 
