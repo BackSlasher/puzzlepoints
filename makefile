@@ -1,4 +1,4 @@
-.PHONY: serve install setup schema clean deploy deploy-schema ssh
+.PHONY: serve install setup schema clean deploy deploy-files deploy-schema ssh
 
 # Default target
 serve: setup
@@ -30,7 +30,7 @@ include .env
 export
 
 # Deploy to production server
-deploy:
+deploy-files:
 	@echo "Deploying to production server..."
 	@echo "Host: $(HOST)"
 	@echo "Directory: $(FTP_DIRECTORY)"
@@ -50,3 +50,6 @@ deploy-schema:
 	@echo "Running database migrations on production server..."
 	@ssh $(FTP_USER)@$(HOST) "cd $(FTP_DIRECTORY) && php-8.3 deploy-schema.php"
 	@echo "✓ Database migrations complete!"
+
+
+deploy: deploy-files deploy-schema
