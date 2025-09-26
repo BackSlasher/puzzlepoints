@@ -105,16 +105,24 @@ class GameResultParser
         }
 
         if ($foundConnections && $puzzleNumber) {
-            // Count mistakes (🟨 = mistake, 🟩 = correct)
-            $mistakes = 0;
+            // Count completed rows (each row of 4 same emojis = 1 solved group)
+            // Perfect game = 4 groups solved = 0 mistakes
+            $colorRows = 0;
             foreach ($lines as $resultLine) {
-                $mistakes += substr_count($resultLine, '🟨');
+                // Count rows with exactly 4 of the same color emoji
+                if (preg_match('/^(🟦🟦🟦🟦|🟨🟨🟨🟨|🟪🟪🟪🟪|🟩🟩🟩🟩)$/', $resultLine)) {
+                    $colorRows++;
+                }
             }
+
+            // Score is mistakes made: 4 (max groups) minus completed groups
+            // Perfect game (4 groups) = 0 mistakes
+            $mistakes = 4 - $colorRows;
 
             return [
                 'gameType' => GameType::CONNECTIONS,
                 'puzzleNumber' => $puzzleNumber,
-                'score' => $mistakes, // Lower is better
+                'score' => max(0, $mistakes), // Ensure non-negative, lower is better
                 'body' => implode("\n", $lines)
             ];
         }
