@@ -47,6 +47,7 @@ try {
         echo "✓ Schema updated successfully\n";
     }
 
+
     echo "\n✓ Database setup complete!\n";
 
 } catch (\Exception $e) {

@@ -52,7 +52,7 @@ ob_start();
                             points
                         <?php endif; ?>
                     </td>
-                    <td><?= $result->getCreatedAt()->format('g:i A') ?></td>
+                    <td class="timestamp" data-timestamp="<?= $result->getCreatedAt()->format('Y-m-d H:i:s') ?>"><?= $result->getCreatedAt()->format('g:i A') ?></td>
                     <td>
                         <div class="game-body"><?= htmlspecialchars($result->getBody()) ?></div>
                     </td>

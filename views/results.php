@@ -59,7 +59,7 @@ ob_start();
         <tbody>
             <?php foreach ($results as $result): ?>
                 <tr>
-                    <td><?= $result->getCreatedAt()->format('M j, Y g:i A') ?></td>
+                    <td class="timestamp" data-timestamp="<?= $result->getCreatedAt()->format('Y-m-d H:i:s') ?>"><?= $result->getCreatedAt()->format('M j, Y g:i A') ?></td>
                     <td><?= htmlspecialchars($result->getUser()->getDisplayname()) ?></td>
                     <td><?= ucwords(str_replace('_', ' ', $result->getGameType()->value)) ?></td>
                     <td>

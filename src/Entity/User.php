@@ -27,7 +27,7 @@ class User
     public function __construct()
     {
         $this->gameScores = new ArrayCollection();
-        $this->createdAt = new \DateTime();
+        $this->createdAt = new \DateTime('now', new \DateTimeZone('UTC'));
     }
 
     public function getId(): int

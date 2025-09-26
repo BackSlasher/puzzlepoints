@@ -48,7 +48,7 @@ class PuzzleInput
 
     public function __construct()
     {
-        $this->createdAt = new \DateTime();
+        $this->createdAt = new \DateTime('now', new \DateTimeZone('UTC'));
     }
 
     public function getId(): int

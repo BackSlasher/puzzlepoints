@@ -33,7 +33,14 @@ ob_start();
                             <?= $puzzle['submissionCount'] == 1 ? 'submission' : 'submissions' ?>
                         </a>
                     </td>
-                    <td>
+                    <td class="timestamp" data-timestamp="<?php
+                        $latestDate = $puzzle['latestSubmission'];
+                        if ($latestDate instanceof DateTime) {
+                            echo $latestDate->format('Y-m-d H:i:s');
+                        } else {
+                            echo date('Y-m-d H:i:s', strtotime($latestDate));
+                        }
+                        ?>">
                         <?php
                         $latestDate = $puzzle['latestSubmission'];
                         if ($latestDate instanceof DateTime) {

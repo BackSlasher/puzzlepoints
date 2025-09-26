@@ -117,7 +117,31 @@
             border-radius: 5px;
             font-size: 14px;
         }
+        .timestamp {
+            color: #666;
+        }
     </style>
+    <script>
+        // Convert UTC timestamps to user's local timezone
+        function convertTimestamps() {
+            const timestamps = document.querySelectorAll('[data-timestamp]');
+            timestamps.forEach(function(element) {
+                const utcTime = element.getAttribute('data-timestamp');
+                const localDate = new Date(utcTime + ' UTC');
+                element.textContent = localDate.toLocaleString([], {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    hour12: true
+                });
+            });
+        }
+
+        // Run on page load
+        document.addEventListener('DOMContentLoaded', convertTimestamps);
+    </script>
 </head>
 <body>
     <div class="header">
