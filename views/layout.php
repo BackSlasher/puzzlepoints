@@ -120,6 +120,21 @@
         .timestamp {
             color: #666;
         }
+        .footer {
+            margin-top: 50px;
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid #eee;
+            color: #666;
+            font-size: 14px;
+        }
+        .footer a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
     </style>
     <script>
         // Convert UTC timestamps to user's local timezone
@@ -155,5 +170,9 @@
     <main>
         <?= $content ?>
     </main>
+    <footer class="footer">
+        By <a href="https://backslasher.net">(\) Backslasher</a> |
+        <a href="https://github.com/BackSlasher/puzzlepoints">Contribute on GitHub</a>
+    </footer>
 </body>
 </html>
