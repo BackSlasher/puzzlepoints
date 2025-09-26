@@ -3,26 +3,43 @@ $title = 'Submit Game Results';
 ob_start();
 ?>
 
-<h2>Submit Your Game Results</h2>
+<div class="card">
+    <div class="card-body">
+        <h2 class="card-title text-center mb-4">
+            <i class="bi bi-cloud-arrow-up text-primary"></i> Submit Your Game Results
+        </h2>
 
-<?php if (!empty($error)): ?>
-    <div class="error"><?= htmlspecialchars($error) ?></div>
-<?php endif; ?>
-
-<form method="POST">
-    <div class="form-group">
-        <label for="displayname">Display Name:</label>
-        <?php if ($user ?? false): ?>
-            <input type="text" id="displayname" name="displayname" value="<?= htmlspecialchars($user->getDisplayname()) ?>" required>
-            <small><a href="/logout">Switch user</a></small>
-        <?php else: ?>
-            <input type="text" id="displayname" name="displayname" value="<?= htmlspecialchars($displayname ?? '') ?>" required>
+        <?php if (!empty($error)): ?>
+            <div class="alert alert-danger">
+                <i class="bi bi-exclamation-triangle"></i> <?= htmlspecialchars($error) ?>
+            </div>
         <?php endif; ?>
-    </div>
 
-    <div class="form-group">
-        <label for="game_input">Game Results:</label>
-        <textarea id="game_input" name="game_input" required placeholder="Paste your game results here, e.g.:
+        <form method="POST">
+            <div class="mb-4">
+                <label for="displayname" class="form-label">
+                    <i class="bi bi-person"></i> Display Name
+                </label>
+                <?php if ($user ?? false): ?>
+                    <input type="text" class="form-control" id="displayname" name="displayname"
+                           value="<?= htmlspecialchars($user->getDisplayname()) ?>" required>
+                    <div class="form-text">
+                        <a href="/logout" class="text-decoration-none">
+                            <i class="bi bi-arrow-right-square"></i> Switch user
+                        </a>
+                    </div>
+                <?php else: ?>
+                    <input type="text" class="form-control" id="displayname" name="displayname"
+                           value="<?= htmlspecialchars($displayname ?? '') ?>" required>
+                <?php endif; ?>
+            </div>
+
+            <div class="mb-4">
+                <label for="game_input" class="form-label">
+                    <i class="bi bi-textarea-t"></i> Game Results
+                </label>
+                <textarea class="form-control" id="game_input" name="game_input" rows="8" required
+                          placeholder="Paste your game results here, e.g.:
 
 Wordle 1,234 4/6
 
@@ -30,21 +47,39 @@ Wordle 1,234 4/6
 ⬛🟩🟩⬛⬛
 🟩🟩🟩⬛🟩
 🟩🟩🟩🟩🟩"><?= htmlspecialchars($game_input ?? '') ?></textarea>
+            </div>
+
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary btn-lg">
+                    <i class="bi bi-check-circle"></i> Submit Results
+                </button>
+            </div>
+        </form>
     </div>
+</div>
 
-    <button type="submit">Submit Results</button>
-</form>
-
-<div style="margin-top: 40px;">
-    <h3>Supported Games:</h3>
-    <ul>
-        <li>Wordle</li>
-        <li>Connections</li>
-        <li>Strands</li>
-        <li>Mini Crossword</li>
-        <li>Spelling Bee</li>
-        <li>Bracket City</li>
-    </ul>
+<div class="card mt-4">
+    <div class="card-body">
+        <h3 class="card-title">
+            <i class="bi bi-controller text-success"></i> Supported Games
+        </h3>
+        <div class="row">
+            <div class="col-md-6">
+                <ul class="list-unstyled">
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success"></i> Wordle</li>
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success"></i> Connections</li>
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success"></i> Strands</li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <ul class="list-unstyled">
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success"></i> Mini Crossword</li>
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success"></i> Spelling Bee</li>
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success"></i> Bracket City</li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
 
 <?php

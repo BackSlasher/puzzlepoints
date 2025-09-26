@@ -5,41 +5,47 @@ ob_start();
 
 <h2>All Game Results</h2>
 
-<div class="filters">
-    <h3>Filters</h3>
-    <form method="GET">
-        <div class="filter-row">
-            <div>
-                <label for="game">Game Type:</label>
-                <select id="game" name="game">
-                    <option value="">All Games</option>
-                    <?php foreach ($gameTypes as $gameType): ?>
-                        <option value="<?= $gameType->value ?>" <?= $gameFilter === $gameType->value ? 'selected' : '' ?>>
-                            <?= ucwords(str_replace('_', ' ', $gameType->value)) ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
+<div class="card mb-4">
+    <div class="card-body">
+        <h3 class="card-title">
+            <i class="bi bi-funnel"></i> Filters
+        </h3>
+        <form method="GET">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label for="game" class="form-label">Game Type:</label>
+                    <select id="game" name="game" class="form-select">
+                        <option value="">All Games</option>
+                        <?php foreach ($gameTypes as $gameType): ?>
+                            <option value="<?= $gameType->value ?>" <?= $gameFilter === $gameType->value ? 'selected' : '' ?>>
+                                <?= ucwords(str_replace('_', ' ', $gameType->value)) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="user" class="form-label">User:</label>
+                    <select id="user" name="user" class="form-select">
+                        <option value="">All Users</option>
+                        <?php foreach ($users as $user): ?>
+                            <option value="<?= $user->getId() ?>" <?= $userFilter == $user->getId() ? 'selected' : '' ?>>
+                                <?= htmlspecialchars($user->getDisplayname()) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="puzzle" class="form-label">Puzzle Number:</label>
+                    <input type="text" id="puzzle" name="puzzle" class="form-control" value="<?= htmlspecialchars($puzzleFilter) ?>" placeholder="e.g. 1234 or 2025-01-15" <?= empty($gameFilter) ? 'disabled' : '' ?>>
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-search"></i> Filter
+                    </button>
+                </div>
             </div>
-            <div>
-                <label for="user">User:</label>
-                <select id="user" name="user">
-                    <option value="">All Users</option>
-                    <?php foreach ($users as $user): ?>
-                        <option value="<?= $user->getId() ?>" <?= $userFilter == $user->getId() ? 'selected' : '' ?>>
-                            <?= htmlspecialchars($user->getDisplayname()) ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-            <div>
-                <label for="puzzle">Puzzle Number:</label>
-                <input type="text" id="puzzle" name="puzzle" value="<?= htmlspecialchars($puzzleFilter) ?>" placeholder="e.g. 1234 or 2025-01-15" <?= empty($gameFilter) ? 'disabled' : '' ?>>
-            </div>
-            <div>
-                <button type="submit">Filter</button>
-            </div>
-        </div>
-    </form>
+        </form>
+    </div>
 </div>
 
 <?php if (empty($results)): ?>

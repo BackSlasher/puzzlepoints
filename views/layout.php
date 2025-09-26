@@ -4,136 +4,177 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $title ?? 'PuzzlePoints' ?></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            line-height: 1.6;
+        :root {
+            --primary-color: #2563eb;
+            --primary-light: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
         }
+
+        body {
+            background: linear-gradient(135deg, #1f2937 0%, #374151 50%, #4b5563 100%);
+            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
         .header {
+            background: linear-gradient(135deg, #4b5563, #6b7280);
+            color: white;
             text-align: center;
-            margin-bottom: 30px;
-            border-bottom: 2px solid #eee;
-            padding-bottom: 20px;
+            padding: 3rem 2rem 2rem;
+            margin: 0;
+            border-radius: 0;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin: 0;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
         .nav {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            padding: 1rem 0;
             text-align: center;
-            margin-bottom: 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
-        .nav a {
-            margin: 0 15px;
-            text-decoration: none;
-            color: #0066cc;
+
+        .nav .btn {
+            margin: 0 0.5rem;
+            border-radius: 25px;
+            padding: 0.75rem 1.5rem;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.9);
+            color: #374151;
             font-weight: 500;
         }
-        .nav a:hover {
-            text-decoration: underline;
+
+        .nav .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 1);
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            color: #374151;
         }
-        .error {
-            background: #fee;
-            border: 1px solid #fcc;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            color: #c00;
+
+        .main-content {
+            padding: 2rem;
         }
-        .success {
-            background: #efe;
-            border: 1px solid #cfc;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            color: #060;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-        }
-        input[type="text"], textarea, select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-        textarea {
-            height: 150px;
-            resize: vertical;
-        }
-        button {
-            background: #0066cc;
-            color: white;
-            padding: 12px 24px;
+
+        .card {
             border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
         }
-        button:hover {
-            background: #0052a3;
+
+        .card:hover {
+            transform: translateY(-5px);
         }
-        .results-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            border: none;
+            border-radius: 25px;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
         }
-        .results-table th, .results-table td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: left;
-        }
-        .results-table th {
-            background: #f5f5f5;
-            font-weight: 500;
-        }
-        .filters {
-            background: #f9f9f9;
-            padding: 20px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
-        .filters h3 {
-            margin-top: 0;
-        }
-        .filter-row {
-            display: flex;
-            gap: 15px;
-            align-items: end;
-        }
-        .filter-row > div {
-            flex: 1;
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
         }
         .game-body {
-            font-family: monospace;
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
             white-space: pre-line;
-            background: #f5f5f5;
-            padding: 10px;
-            border-radius: 5px;
+            background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+            padding: 1rem;
+            border-radius: 10px;
             font-size: 14px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
         }
+
         .timestamp {
-            color: #666;
+            color: #6c757d;
+            font-weight: 500;
         }
+
+        .table {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .table th {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: white;
+            font-weight: 600;
+            border: none;
+            padding: 1rem;
+        }
+
+        .table td {
+            padding: 1rem;
+            border-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .alert {
+            border: none;
+            border-radius: 15px;
+            padding: 1rem 1.5rem;
+        }
+
         .footer {
-            margin-top: 50px;
-            padding: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(5px);
+            padding: 2rem;
             text-align: center;
-            border-top: 1px solid #eee;
-            color: #666;
-            font-size: 14px;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            color: #374151;
         }
+
         .footer a {
-            color: #0066cc;
+            color: #374151;
             text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s ease;
         }
+
         .footer a:hover {
-            text-decoration: underline;
+            opacity: 0.8;
+            color: #374151;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .nav .btn {
+                margin: 0.25rem;
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
         }
     </style>
     <script>
@@ -157,22 +198,33 @@
         // Run on page load
         document.addEventListener('DOMContentLoaded', convertTimestamps);
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-    <div class="header">
-        <h1>🎯 PuzzlePoints</h1>
+    <div class="container-fluid">
+        <div class="container">
+            <div class="header">
+                <h1><i class="bi bi-bullseye"></i> PuzzlePoints</h1>
+            </div>
+            <nav class="nav">
+                <a href="/input" class="btn btn-outline-light">
+                    <i class="bi bi-plus-circle"></i> Submit Results
+                </a>
+                <a href="/puzzles" class="btn btn-outline-light">
+                    <i class="bi bi-puzzle"></i> Puzzles
+                </a>
+                <a href="/results" class="btn btn-outline-light">
+                    <i class="bi bi-list-ul"></i> All Results
+                </a>
+            </nav>
+            <main class="main-content">
+                <?= $content ?>
+            </main>
+            <footer class="footer">
+                By <a href="https://backslasher.net"><i class="bi bi-person-circle"></i> (\) Backslasher</a> |
+                <a href="https://github.com/BackSlasher/puzzlepoints"><i class="bi bi-github"></i> Contribute on GitHub</a>
+            </footer>
+        </div>
     </div>
-    <nav class="nav">
-        <a href="/input">Submit Results</a>
-        <a href="/puzzles">Puzzles</a>
-        <a href="/results">All Results</a>
-    </nav>
-    <main>
-        <?= $content ?>
-    </main>
-    <footer class="footer">
-        By <a href="https://backslasher.net">(\) Backslasher</a> |
-        <a href="https://github.com/BackSlasher/puzzlepoints">Contribute on GitHub</a>
-    </footer>
 </body>
 </html>
