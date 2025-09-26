@@ -49,19 +49,3 @@ deploy-schema:
 	@echo "Running database migrations on production server..."
 	@ssh $(FTP_USER)@$(HOST) "cd $(FTP_DIRECTORY) && php-8.3 deploy-schema.php"
 	@echo "✓ Database migrations complete!"
-
-# SSH to production server
-ssh:
-	@ssh $(FTP_USER)@$(HOST)
-
-# Help
-help:
-	@echo "Available commands:"
-	@echo "  serve         - Start PHP development server (default)"
-	@echo "  install       - Install composer dependencies"
-	@echo "  setup         - Install deps and setup database"
-	@echo "  schema        - Update database schema"
-	@echo "  clean         - Clean up generated files"
-	@echo "  deploy        - Deploy to production server via rsync"
-	@echo "  deploy-schema - Run database migrations on production"
-	@echo "  ssh           - SSH to production server"
