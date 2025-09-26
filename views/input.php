@@ -14,10 +14,9 @@ ob_start();
         <label for="displayname">Display Name:</label>
         <?php if ($user ?? false): ?>
             <input type="text" id="displayname" name="displayname" value="<?= htmlspecialchars($user->getDisplayname()) ?>" required>
-            <small>Welcome back, <?= htmlspecialchars($user->getDisplayname()) ?>! <a href="/logout">Switch user</a></small>
+            <small><a href="/logout">Switch user</a></small>
         <?php else: ?>
             <input type="text" id="displayname" name="displayname" value="<?= htmlspecialchars($displayname ?? '') ?>" required>
-            <small>Enter your display name (no password required)</small>
         <?php endif; ?>
     </div>
 
@@ -31,7 +30,6 @@ Wordle 1,234 4/6
 ⬛🟩🟩⬛⬛
 🟩🟩🟩⬛🟩
 🟩🟩🟩🟩🟩"><?= htmlspecialchars($game_input ?? '') ?></textarea>
-        <small>Supported games: Wordle, Connections, Strands, Mini Crossword, Spelling Bee</small>
     </div>
 
     <button type="submit">Submit Results</button>
