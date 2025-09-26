@@ -51,36 +51,44 @@ ob_start();
 <?php if (empty($results)): ?>
     <p>No results found. <a href="/input">Submit your first result!</a></p>
 <?php else: ?>
-    <table class="results-table">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>User</th>
-                <th>Game</th>
-                <th>Puzzle</th>
-                <th>Score</th>
-                <th>Details</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($results as $result): ?>
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
                 <tr>
-                    <td class="timestamp" data-timestamp="<?= $result->getCreatedAt()->format('Y-m-d H:i:s') ?>"><?= $result->getCreatedAt()->format('M j, Y g:i A') ?></td>
-                    <td><?= htmlspecialchars($result->getUser()->getDisplayname()) ?></td>
-                    <td><?= ucwords(str_replace('_', ' ', $result->getGameType()->value)) ?></td>
-                    <td>
-                        <a href="/results/<?= $result->getGameType()->value ?>/<?= urlencode($result->getPuzzleNumber()) ?>">
-                            <?= htmlspecialchars($result->getPuzzleNumber()) ?>
-                        </a>
-                    </td>
-                    <td><?= $result->getScore() ?></td>
-                    <td>
-                        <div class="game-body"><?= htmlspecialchars($result->getBody()) ?></div>
-                    </td>
+                    <th><i class="bi bi-calendar3"></i> Date</th>
+                    <th><i class="bi bi-person"></i> User</th>
+                    <th><i class="bi bi-controller"></i> Game</th>
+                    <th><i class="bi bi-hash"></i> Puzzle</th>
+                    <th><i class="bi bi-trophy"></i> Score</th>
+                    <th><i class="bi bi-card-text"></i> Details</th>
                 </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <?php foreach ($results as $result): ?>
+                    <tr>
+                        <td class="timestamp" data-timestamp="<?= $result->getCreatedAt()->format('Y-m-d H:i:s') ?>">
+                            <?= $result->getCreatedAt()->format('M j, Y g:i A') ?>
+                        </td>
+                        <td>
+                            <span class="badge bg-secondary"><?= htmlspecialchars($result->getUser()->getDisplayname()) ?></span>
+                        </td>
+                        <td><?= ucwords(str_replace('_', ' ', $result->getGameType()->value)) ?></td>
+                        <td>
+                            <a href="/results/<?= $result->getGameType()->value ?>/<?= urlencode($result->getPuzzleNumber()) ?>" class="btn btn-outline-primary btn-sm">
+                                <?= htmlspecialchars($result->getPuzzleNumber()) ?>
+                            </a>
+                        </td>
+                        <td>
+                            <span class="badge bg-success"><?= $result->getScore() ?></span>
+                        </td>
+                        <td>
+                            <div class="game-body"><?= htmlspecialchars($result->getBody()) ?></div>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
 <?php endif; ?>
 
 <script>

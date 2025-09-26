@@ -10,57 +10,65 @@ ob_start();
 <?php if (empty($results)): ?>
     <p>No results found for this game and puzzle.</p>
 <?php else: ?>
-    <table class="results-table">
-        <thead>
-            <tr>
-                <th>Rank</th>
-                <th>User</th>
-                <th>Score</th>
-                <th>Submitted</th>
-                <th>Result</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php $rank = 1; ?>
-            <?php foreach ($results as $result): ?>
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
                 <tr>
-                    <td>
-                        <?php if ($rank === 1): ?>
-                            🥇
-                        <?php elseif ($rank === 2): ?>
-                            🥈
-                        <?php elseif ($rank === 3): ?>
-                            🥉
-                        <?php else: ?>
-                            <?= $rank ?>
-                        <?php endif; ?>
-                    </td>
-                    <td><?= htmlspecialchars($result->getUser()->getDisplayname()) ?></td>
-                    <td>
-                        <?= $result->getScore() ?>
-                        <?php if ($gameType->value === 'spelling_bee'): ?>
-                            points
-                        <?php elseif ($gameType->value === 'wordle'): ?>
-                            /6 <?= $result->getScore() === 7 ? '(Failed)' : '' ?>
-                        <?php elseif ($gameType->value === 'connections'): ?>
-                            mistakes
-                        <?php elseif ($gameType->value === 'strands'): ?>
-                            hints
-                        <?php elseif ($gameType->value === 'mini_crossword'): ?>
-                            <?= gmdate("i:s", $result->getScore()) ?>
-                        <?php elseif ($gameType->value === 'bracket_city'): ?>
-                            points
-                        <?php endif; ?>
-                    </td>
-                    <td class="timestamp" data-timestamp="<?= $result->getCreatedAt()->format('Y-m-d H:i:s') ?>"><?= $result->getCreatedAt()->format('g:i A') ?></td>
-                    <td>
-                        <div class="game-body"><?= htmlspecialchars($result->getBody()) ?></div>
-                    </td>
+                    <th><i class="bi bi-trophy"></i> Rank</th>
+                    <th><i class="bi bi-person"></i> User</th>
+                    <th><i class="bi bi-star"></i> Score</th>
+                    <th><i class="bi bi-clock"></i> Submitted</th>
+                    <th><i class="bi bi-card-text"></i> Result</th>
                 </tr>
-                <?php $rank++; ?>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <?php $rank = 1; ?>
+                <?php foreach ($results as $result): ?>
+                    <tr>
+                        <td class="text-center">
+                            <?php if ($rank === 1): ?>
+                                <span class="fs-4">🥇</span>
+                            <?php elseif ($rank === 2): ?>
+                                <span class="fs-4">🥈</span>
+                            <?php elseif ($rank === 3): ?>
+                                <span class="fs-4">🥉</span>
+                            <?php else: ?>
+                                <span class="badge bg-secondary"><?= $rank ?></span>
+                            <?php endif; ?>
+                        </td>
+                        <td>
+                            <span class="badge bg-info"><?= htmlspecialchars($result->getUser()->getDisplayname()) ?></span>
+                        </td>
+                        <td>
+                            <span class="badge bg-success">
+                                <?= $result->getScore() ?>
+                                <?php if ($gameType->value === 'spelling_bee'): ?>
+                                    points
+                                <?php elseif ($gameType->value === 'wordle'): ?>
+                                    /6 <?= $result->getScore() === 7 ? '(Failed)' : '' ?>
+                                <?php elseif ($gameType->value === 'connections'): ?>
+                                    mistakes
+                                <?php elseif ($gameType->value === 'strands'): ?>
+                                    hints
+                                <?php elseif ($gameType->value === 'mini_crossword'): ?>
+                                    <?= gmdate("i:s", $result->getScore()) ?>
+                                <?php elseif ($gameType->value === 'bracket_city'): ?>
+                                    points
+                                <?php endif; ?>
+                            </span>
+                        </td>
+                        <td class="timestamp" data-timestamp="<?= $result->getCreatedAt()->format('Y-m-d H:i:s') ?>">
+                            <?= $result->getCreatedAt()->format('g:i A') ?>
+                        </td>
+                        <td>
+                            <div class="game-body"><?= htmlspecialchars($result->getBody()) ?></div>
+                        </td>
+                    </tr>
+                    <?php $rank++; ?>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
 
     <div style="margin-top: 20px;">
         <h3>Share this page:</h3>

@@ -8,9 +8,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <style>
         :root {
-            --primary-color: #2563eb;
-            --primary-light: #3b82f6;
-            --primary-dark: #1d4ed8;
+            --primary-color: #4b5563;
+            --primary-light: #6b7280;
+            --primary-dark: #374151;
             --success-color: #10b981;
             --warning-color: #f59e0b;
             --danger-color: #ef4444;
