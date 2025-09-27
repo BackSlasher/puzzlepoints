@@ -30,10 +30,8 @@ ob_start();
                         </td>
                         <td>
                             <a href="/results/<?= $puzzle['gameType']->value ?>/<?= urlencode($puzzle['puzzleNumber']) ?>" class="text-decoration-none">
-                                <span class="badge bg-success">
-                                    <?= $puzzle['submissionCount'] ?>
-                                    <?= $puzzle['submissionCount'] == 1 ? 'submission' : 'submissions' ?>
-                                </span>
+                                <strong><?= $puzzle['submissionCount'] ?></strong>
+                                <?= $puzzle['submissionCount'] == 1 ? 'submission' : 'submissions' ?>
                             </a>
                         </td>
                         <td class="timestamp" data-timestamp="<?php

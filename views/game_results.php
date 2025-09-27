@@ -27,9 +27,7 @@ ob_start();
                             <span class="badge bg-info"><?= htmlspecialchars($result->getUser()->getDisplayname()) ?></span>
                         </td>
                         <td>
-                            <span class="badge bg-success">
-                                <?= $result->getDisplayScore() ?: $result->getScore() ?>
-                            </span>
+                            <?= $result->getDisplayScore() ?: $result->getScore() ?>
                         </td>
                         <td class="timestamp" data-timestamp="<?= $result->getCreatedAt()->format('Y-m-d H:i:s') ?>">
                             <?= $result->getCreatedAt()->format('g:i A') ?>

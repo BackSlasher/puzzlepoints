@@ -75,7 +75,7 @@ ob_start();
                             </a>
                         </td>
                         <td>
-                            <span class="badge bg-success"><?= $result->getDisplayScore() ?: $result->getScore() ?></span>
+                            <?= $result->getDisplayScore() ?: $result->getScore() ?>
                         </td>
                     </tr>
                     <!-- Details row -->
