@@ -14,7 +14,6 @@ ob_start();
         <table class="table table-striped table-hover">
             <thead class="table-dark">
                 <tr>
-                    <th><i class="bi bi-trophy"></i> Rank</th>
                     <th><i class="bi bi-person"></i> User</th>
                     <th><i class="bi bi-star"></i> Score</th>
                     <th><i class="bi bi-clock"></i> Submitted</th>
@@ -22,20 +21,8 @@ ob_start();
                 </tr>
             </thead>
             <tbody>
-                <?php $rank = 1; ?>
                 <?php foreach ($results as $result): ?>
                     <tr>
-                        <td class="text-center">
-                            <?php if ($rank === 1): ?>
-                                <span class="fs-4">🥇</span>
-                            <?php elseif ($rank === 2): ?>
-                                <span class="fs-4">🥈</span>
-                            <?php elseif ($rank === 3): ?>
-                                <span class="fs-4">🥉</span>
-                            <?php else: ?>
-                                <span class="badge bg-secondary"><?= $rank ?></span>
-                            <?php endif; ?>
-                        </td>
                         <td>
                             <span class="badge bg-info"><?= htmlspecialchars($result->getUser()->getDisplayname()) ?></span>
                         </td>
@@ -51,7 +38,6 @@ ob_start();
                             <div class="game-body"><?= htmlspecialchars($result->getBody()) ?></div>
                         </td>
                     </tr>
-                    <?php $rank++; ?>
                 <?php endforeach; ?>
             </tbody>
         </table>
