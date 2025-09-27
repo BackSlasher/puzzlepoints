@@ -45,14 +45,7 @@ ob_start();
                     <i class="bi bi-textarea-t"></i> Game Results
                 </label>
                 <textarea class="form-control" id="game_input" name="game_input" rows="8" required
-                          placeholder="Paste your game results here, e.g.:
-
-Wordle 1,234 4/6
-
-⬛🟨⬛⬛⬛
-⬛🟩🟩⬛⬛
-🟩🟩🟩⬛🟩
-🟩🟩🟩🟩🟩"><?= htmlspecialchars($game_input ?? '') ?></textarea>
+                          placeholder="Paste your game results here..."><?= htmlspecialchars($game_input ?? '') ?></textarea>
             </div>
 
             <div class="text-center">
