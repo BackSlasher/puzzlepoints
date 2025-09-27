@@ -70,12 +70,17 @@ class GameResultParser
             // Wordle pattern: "Wordle 1,234 4/6"
             if (preg_match('/^Wordle\s+([0-9,]+)\s+([0-6X])\/6/i', $line, $matches)) {
                 $puzzleNumber = str_replace(',', '', $matches[1]);
-                $score = $matches[2] === 'X' ? 7 : (int)$matches[2]; // X means failed (7 points)
+                $rawScore = $matches[2] === 'X' ? 7 : (int)$matches[2];
+
+                // Convert to "higher is better": 7 - rawScore (so 1 guess = 6 points, failed = 0 points)
+                $numericScore = 7 - $rawScore;
+                $displayScore = $rawScore === 7 ? "X/6 (Failed)" : "$rawScore/6";
 
                 return [
                     'gameType' => GameType::WORDLE,
                     'puzzleNumber' => $puzzleNumber,
-                    'score' => $score,
+                    'score' => $numericScore,
+                    'displayScore' => $displayScore,
                     'body' => implode("\n", $lines)
                 ];
             }
@@ -117,12 +122,17 @@ class GameResultParser
 
             // Score is mistakes made: 4 (max groups) minus completed groups
             // Perfect game (4 groups) = 0 mistakes
-            $mistakes = 4 - $colorRows;
+            $mistakes = max(0, 4 - $colorRows);
+
+            // Convert to "higher is better": 4 - mistakes (so 0 mistakes = 4 points, 4 mistakes = 0 points)
+            $numericScore = 4 - $mistakes;
+            $displayScore = $mistakes === 0 ? "Perfect!" : "$mistakes mistakes";
 
             return [
                 'gameType' => GameType::CONNECTIONS,
                 'puzzleNumber' => $puzzleNumber,
-                'score' => max(0, $mistakes), // Ensure non-negative, lower is better
+                'score' => $numericScore,
+                'displayScore' => $displayScore,
                 'body' => implode("\n", $lines)
             ];
         }
@@ -143,10 +153,15 @@ class GameResultParser
                     $hints += substr_count($resultLine, '💡');
                 }
 
+                // Convert to "higher is better": use large number - hints (so 0 hints = 1000, 5 hints = 995)
+                $numericScore = 1000 - $hints;
+                $displayScore = $hints === 0 ? "Perfect!" : "$hints hints";
+
                 return [
                     'gameType' => GameType::STRANDS,
                     'puzzleNumber' => $puzzleNumber,
-                    'score' => $hints, // Lower is better
+                    'score' => $numericScore,
+                    'displayScore' => $displayScore,
                     'body' => implode("\n", $lines)
                 ];
             }
@@ -165,10 +180,15 @@ class GameResultParser
                         $totalSeconds = (int)$matches[1] * 60 + (int)$matches[2];
                         $date = date('Y-m-d'); // Use today's date
 
+                        // Convert to "higher is better": use large number - seconds (faster time = higher score)
+                        $numericScore = 10000 - $totalSeconds;
+                        $displayScore = gmdate("i:s", $totalSeconds);
+
                         return [
                             'gameType' => GameType::MINI_CROSSWORD,
                             'puzzleNumber' => $date,
-                            'score' => $totalSeconds, // Lower is better
+                            'score' => $numericScore,
+                            'displayScore' => $displayScore,
                             'body' => implode("\n", $lines)
                         ];
                     }
@@ -189,10 +209,13 @@ class GameResultParser
                         $points = (int)$matches[1];
                         $date = date('Y-m-d'); // Use today's date
 
+                        $displayScore = "$points points";
+
                         return [
                             'gameType' => GameType::SPELLING_BEE,
                             'puzzleNumber' => $date,
-                            'score' => $points, // Higher is better
+                            'score' => $points, // Already "higher is better"
+                            'displayScore' => $displayScore,
                             'body' => implode("\n", $lines)
                         ];
                     }
@@ -207,9 +230,11 @@ class GameResultParser
         foreach ($lines as $line) {
             // Bracket City pattern: "[Bracket City]"
             if (preg_match('/^\[Bracket City\]/i', $line)) {
-                // Look for date in next lines (e.g., "September 3, 2025")
+                // Look for date, rank, and score in next lines
                 $puzzleDate = null;
                 $score = null;
+                $rankEmoji = null;
+                $rankTitle = null;
 
                 foreach ($lines as $checkLine) {
                     // Parse date line (e.g., "September 3, 2025")
@@ -220,13 +245,31 @@ class GameResultParser
                         $puzzleDate = "$year-$month-$day";
                     }
 
+                    // Parse rank line (e.g., "Rank: 🔮 (Puppet Master)")
+                    if (preg_match('/^Rank:\s*([^\s\(]+)\s*\(([^)]+)\)/i', $checkLine, $rankMatches)) {
+                        $rankEmoji = trim($rankMatches[1]);
+                        $rankTitle = trim($rankMatches[2]);
+                    }
+
                     // Parse score line (e.g., "Total Score: 96.0")
                     if (preg_match('/Total\s+Score:\s+([0-9.]+)/i', $checkLine, $scoreMatches)) {
-                        $score = (int)round((float)$scoreMatches[1]); // Convert to integer for consistency
+                        $score = (int)round((float)$scoreMatches[1]);
                     }
                 }
 
                 if ($puzzleDate && $score !== null) {
+                    // Create display score and numeric score
+                    $displayScore = null;
+                    $numericScore = $score; // Base score from points
+
+                    if ($rankEmoji && $rankTitle) {
+                        $displayScore = "$rankEmoji ($rankTitle)";
+                        // Add bonus points based on emoji rank for sorting
+                        $numericScore += $this->getBracketCityRankBonus($rankEmoji);
+                    } else {
+                        $displayScore = "$score points";
+                    }
+
                     // Remove URLs from the body for display
                     $cleanedLines = [];
                     foreach ($lines as $bodyLine) {
@@ -239,12 +282,33 @@ class GameResultParser
                     return [
                         'gameType' => GameType::BRACKET_CITY,
                         'puzzleNumber' => $puzzleDate,
-                        'score' => $score, // Higher is better
+                        'score' => $numericScore, // Numeric score for sorting
+                        'displayScore' => $displayScore, // User-visible score
                         'body' => implode("\n", $cleanedLines) // URLs removed
                     ];
                 }
             }
         }
         return null;
+    }
+
+    private function getBracketCityRankBonus(string $emoji): int
+    {
+        // Higher tier emojis get higher bonus points for ranking
+        $rankBonuses = [
+            '🔮' => 10000, // Puppet Master (highest)
+            '🎭' => 9000,  // Theater masks
+            '👑' => 8000,  // Crown
+            '🎪' => 7000,  // Circus tent
+            '🎨' => 6000,  // Artist palette
+            '🎬' => 5000,  // Movie clapper
+            '🎯' => 4000,  // Direct hit
+            '🎲' => 3000,  // Dice
+            '🎰' => 2000,  // Slot machine
+            '🎳' => 1000,  // Bowling
+            // Add more emoji ranks as they're discovered
+        ];
+
+        return $rankBonuses[$emoji] ?? 0;
     }
 }

@@ -31,6 +31,9 @@ class GameScore
     #[ORM\Column(type: 'integer')]
     private int $score;
 
+    #[ORM\Column(type: 'string', length: 100, nullable: true, name: 'display_score')]
+    private ?string $displayScore = null;
+
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $body = null;
 
@@ -88,6 +91,17 @@ class GameScore
     public function setScore(int $score): self
     {
         $this->score = $score;
+        return $this;
+    }
+
+    public function getDisplayScore(): ?string
+    {
+        return $this->displayScore;
+    }
+
+    public function setDisplayScore(?string $displayScore): self
+    {
+        $this->displayScore = $displayScore;
         return $this;
     }
 

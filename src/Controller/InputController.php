@@ -113,6 +113,11 @@ class InputController
                   ->setScore($parsedResult['score'])
                   ->setBody($parsedResult['body']);
 
+        // Set display score if provided
+        if (isset($parsedResult['displayScore'])) {
+            $gameScore->setDisplayScore($parsedResult['displayScore']);
+        }
+
         $this->entityManager->persist($gameScore);
         $this->entityManager->flush();
 

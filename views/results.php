@@ -75,7 +75,7 @@ ob_start();
                             </a>
                         </td>
                         <td>
-                            <span class="badge bg-success"><?= $result->getScore() ?></span>
+                            <span class="badge bg-success"><?= $result->getDisplayScore() ?: $result->getScore() ?></span>
                         </td>
                         <td>
                             <div class="game-body"><?= htmlspecialchars($result->getBody()) ?></div>

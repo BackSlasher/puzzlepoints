@@ -76,13 +76,8 @@ class ResultsController
             ->setParameter('gameType', $gameType)
             ->setParameter('puzzleNumber', $puzzleNumber);
 
-        // Order by score (ascending for most games where lower is better,
-        // except Spelling Bee and Bracket City where higher is better)
-        if ($gameType === GameType::SPELLING_BEE || $gameType === GameType::BRACKET_CITY) {
-            $queryBuilder->orderBy('gs.score', 'DESC');
-        } else {
-            $queryBuilder->orderBy('gs.score', 'ASC');
-        }
+        // Order by score (all games now use "higher is better" scoring)
+        $queryBuilder->orderBy('gs.score', 'DESC');
 
         $results = $queryBuilder->getQuery()->getResult();
 

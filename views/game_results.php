@@ -41,20 +41,7 @@ ob_start();
                         </td>
                         <td>
                             <span class="badge bg-success">
-                                <?= $result->getScore() ?>
-                                <?php if ($gameType->value === 'spelling_bee'): ?>
-                                    points
-                                <?php elseif ($gameType->value === 'wordle'): ?>
-                                    /6 <?= $result->getScore() === 7 ? '(Failed)' : '' ?>
-                                <?php elseif ($gameType->value === 'connections'): ?>
-                                    mistakes
-                                <?php elseif ($gameType->value === 'strands'): ?>
-                                    hints
-                                <?php elseif ($gameType->value === 'mini_crossword'): ?>
-                                    <?= gmdate("i:s", $result->getScore()) ?>
-                                <?php elseif ($gameType->value === 'bracket_city'): ?>
-                                    points
-                                <?php endif; ?>
+                                <?= $result->getDisplayScore() ?: $result->getScore() ?>
                             </span>
                         </td>
                         <td class="timestamp" data-timestamp="<?= $result->getCreatedAt()->format('Y-m-d H:i:s') ?>">
