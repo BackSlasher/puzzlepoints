@@ -15,6 +15,12 @@ ob_start();
             </div>
         <?php endif; ?>
 
+        <?php if (!empty($success)): ?>
+            <div class="alert alert-success">
+                <i class="bi bi-check-circle"></i> <?= htmlspecialchars($success) ?>
+            </div>
+        <?php endif; ?>
+
         <form method="POST">
             <div class="mb-4">
                 <label for="displayname" class="form-label">
@@ -50,8 +56,11 @@ Wordle 1,234 4/6
             </div>
 
             <div class="text-center">
-                <button type="submit" class="btn btn-primary btn-lg">
+                <button type="submit" name="submit" class="btn btn-primary btn-lg me-3 mb-2">
                     <i class="bi bi-check-circle"></i> Submit Results
+                </button>
+                <button type="submit" name="submit_and_continue" class="btn btn-primary btn-lg mb-2">
+                    <i class="bi bi-plus-circle"></i> Submit & Add Another
                 </button>
             </div>
         </form>

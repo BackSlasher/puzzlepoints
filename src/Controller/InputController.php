@@ -20,12 +20,23 @@ class InputController
     {
         session_start();
         $currentUser = null;
+        $successMessage = null;
 
         if (!empty($_SESSION['user_id'])) {
             $currentUser = $this->entityManager->find(User::class, $_SESSION['user_id']);
         }
 
-        $this->render('input', ['user' => $currentUser]);
+        // Check for success message from previous submission
+        if (!empty($_SESSION['success_message'])) {
+            $successMessage = $_SESSION['success_message'];
+            unset($_SESSION['success_message']); // Clear it after displaying
+        }
+
+        $this->render('input', [
+            'user' => $currentUser,
+            'success' => $successMessage,
+            'game_input' => $successMessage ? '' : ($_POST['game_input'] ?? '') // Clear input if there was a success message
+        ]);
     }
 
     public function submit(): void
@@ -108,11 +119,23 @@ class InputController
         // Set user session
         $_SESSION['user_id'] = $user->getId();
 
-        // Redirect to game results page
-        $gameTypeName = $parsedResult['gameType']->value;
-        $puzzleNumber = $parsedResult['puzzleNumber'];
-        header("Location: /results/$gameTypeName/$puzzleNumber");
-        exit;
+        // Check which button was clicked
+        if (isset($_POST['submit_and_continue'])) {
+            // Store success message in session
+            $gameTypeName = ucwords(str_replace('_', ' ', $parsedResult['gameType']->value));
+            $puzzleNumber = $parsedResult['puzzleNumber'];
+            $_SESSION['success_message'] = "Successfully submitted $gameTypeName #$puzzleNumber with score {$parsedResult['score']}!";
+
+            // Redirect back to input page
+            header("Location: /input");
+            exit;
+        } else {
+            // Default behavior: redirect to game results page
+            $gameTypeName = $parsedResult['gameType']->value;
+            $puzzleNumber = $parsedResult['puzzleNumber'];
+            header("Location: /results/$gameTypeName/$puzzleNumber");
+            exit;
+        }
     }
 
     private function render(string $template, array $data = []): void
