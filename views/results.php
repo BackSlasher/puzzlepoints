@@ -68,7 +68,11 @@ ob_start();
                         <td>
                             <span class="badge bg-secondary"><?= htmlspecialchars($result->getUser()->getDisplayname()) ?></span>
                         </td>
-                        <td><?= ucwords(str_replace('_', ' ', $result->getGameType()->value)) ?></td>
+                        <td>
+                            <a href="/results?game=<?= $result->getGameType()->value ?>" class="text-decoration-none">
+                                <?= ucwords(str_replace('_', ' ', $result->getGameType()->value)) ?>
+                            </a>
+                        </td>
                         <td>
                             <a href="/results/<?= $result->getGameType()->value ?>/<?= urlencode($result->getPuzzleNumber()) ?>" class="btn btn-outline-primary btn-sm">
                                 <?= htmlspecialchars($result->getPuzzleNumber()) ?>

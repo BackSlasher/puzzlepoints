@@ -22,7 +22,11 @@ ob_start();
             <tbody>
                 <?php foreach ($puzzleStats as $puzzle): ?>
                     <tr>
-                        <td><?= ucwords(str_replace('_', ' ', $puzzle['gameType']->value)) ?></td>
+                        <td>
+                            <a href="/results?game=<?= $puzzle['gameType']->value ?>" class="text-decoration-none">
+                                <?= ucwords(str_replace('_', ' ', $puzzle['gameType']->value)) ?>
+                            </a>
+                        </td>
                         <td>
                             <a href="/results/<?= $puzzle['gameType']->value ?>/<?= urlencode($puzzle['puzzleNumber']) ?>" class="btn btn-outline-primary btn-sm">
                                 <?= htmlspecialchars($puzzle['puzzleNumber']) ?>
