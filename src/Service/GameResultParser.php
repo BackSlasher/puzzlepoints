@@ -260,12 +260,10 @@ class GameResultParser
                 if ($puzzleDate && $score !== null) {
                     // Create display score and numeric score
                     $displayScore = null;
-                    $numericScore = $score; // Base score from points
+                    $numericScore = $score; // Use base score for ranking (higher points = better)
 
                     if ($rankEmoji && $rankTitle) {
                         $displayScore = "$rankEmoji ($rankTitle)";
-                        // Add bonus points based on emoji rank for sorting
-                        $numericScore += $this->getBracketCityRankBonus($rankEmoji);
                     } else {
                         $displayScore = "$score points";
                     }
@@ -292,23 +290,4 @@ class GameResultParser
         return null;
     }
 
-    private function getBracketCityRankBonus(string $emoji): int
-    {
-        // Higher tier emojis get higher bonus points for ranking
-        $rankBonuses = [
-            '🔮' => 10000, // Puppet Master (highest)
-            '🎭' => 9000,  // Theater masks
-            '👑' => 8000,  // Crown
-            '🎪' => 7000,  // Circus tent
-            '🎨' => 6000,  // Artist palette
-            '🎬' => 5000,  // Movie clapper
-            '🎯' => 4000,  // Direct hit
-            '🎲' => 3000,  // Dice
-            '🎰' => 2000,  // Slot machine
-            '🎳' => 1000,  // Bowling
-            // Add more emoji ranks as they're discovered
-        ];
-
-        return $rankBonuses[$emoji] ?? 0;
-    }
 }
