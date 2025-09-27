@@ -41,10 +41,6 @@ ob_start();
         </table>
     </div>
 
-    <div style="margin-top: 20px;">
-        <h3>Share this page:</h3>
-        <code><?= $_SERVER['HTTP_HOST'] ?? 'localhost' ?><?= $_SERVER['REQUEST_URI'] ?></code>
-    </div>
 <?php endif; ?>
 
 <?php
