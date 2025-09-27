@@ -35,13 +35,9 @@ deploy-files:
 	@echo "Host: $(HOST)"
 	@echo "Directory: $(FTP_DIRECTORY)"
 	@rsync -avz --delete \
-		--exclude='.sl' \
+		--filter=':- .gitignore' \
 		--exclude='.git' \
-		--exclude='var/data.db*' \
-		--exclude='.env.local' \
-		--exclude='node_modules' \
-		--exclude='.DS_Store' \
-		--exclude='public/' \
+		--exclude='.sl' \
 		./ $(FTP_USER)@$(HOST):$(FTP_DIRECTORY)
 	@echo "✓ Deployment complete!"
 
