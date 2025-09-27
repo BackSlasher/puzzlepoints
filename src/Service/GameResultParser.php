@@ -115,18 +115,34 @@ class GameResultParser
             $colorRows = 0;
             foreach ($lines as $resultLine) {
                 // Count rows with exactly 4 of the same color emoji
-                if (preg_match('/^(🟦🟦🟦🟦|🟨🟨🟨🟨|🟪🟪🟪🟪|🟩🟩🟩🟩)$/', $resultLine)) {
+                if (preg_match('/^(🟦🟦🟦🟦|🟨🟨🟨🟨|🟪🟪🟪🟪|🟩🟩🟩🟩)$/u', $resultLine)) {
                     $colorRows++;
                 }
             }
 
-            // Score is mistakes made: 4 (max groups) minus completed groups
-            // Perfect game (4 groups) = 0 mistakes
-            $mistakes = max(0, 4 - $colorRows);
+            // Count total emoji rows (both successful and failed attempts)
+            $totalRows = 0;
+            foreach ($lines as $resultLine) {
+                // Count any line that has exactly 4 connection emojis
+                if (preg_match('/^[🟦🟨🟪🟩]{4}$/u', $resultLine)) {
+                    $totalRows++;
+                }
+            }
 
-            // Convert to "higher is better": 4 - mistakes (so 0 mistakes = 4 points, 4 mistakes = 0 points)
-            $numericScore = 4 - $mistakes;
-            $displayScore = $mistakes === 0 ? "Perfect!" : "$mistakes mistakes";
+            // Calculate mistake rows: total rows - successful color rows
+            $mistakeRows = $totalRows - $colorRows;
+
+            // Handle scoring: must complete all 4 groups to avoid failure
+            if ($colorRows === 4) {
+                // All 4 groups completed - score based on mistakes made
+                // Score: 5 - mistakes (so 0 mistakes = 5, 4 mistakes = 1)
+                $numericScore = 5 - $mistakeRows;
+                $displayScore = $mistakeRows === 0 ? "Perfect!" : "$mistakeRows mistakes";
+            } else {
+                // Didn't complete all 4 groups = failed
+                $numericScore = 0; // Failed score
+                $displayScore = "Failed";
+            }
 
             return [
                 'gameType' => GameType::CONNECTIONS,
