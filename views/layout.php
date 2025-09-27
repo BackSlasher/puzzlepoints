@@ -117,6 +117,21 @@
             box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
         }
 
+        .details-row {
+            background-color: rgba(0, 0, 0, 0.02) !important;
+        }
+
+        .details-cell {
+            padding: 0.5rem 1rem !important;
+            border-top: none !important;
+        }
+
+        .details-row .game-body {
+            margin-bottom: 0;
+            font-size: 12px;
+            padding: 0.75rem;
+        }
+
         .timestamp {
             color: #6c757d;
             font-weight: 500;

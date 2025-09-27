@@ -56,11 +56,11 @@ ob_start();
                     <th><i class="bi bi-controller"></i> Game</th>
                     <th><i class="bi bi-hash"></i> Puzzle</th>
                     <th><i class="bi bi-trophy"></i> Score</th>
-                    <th><i class="bi bi-card-text"></i> Details</th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($results as $result): ?>
+                    <!-- Main data row -->
                     <tr>
                         <td class="timestamp" data-timestamp="<?= $result->getCreatedAt()->format('Y-m-d H:i:s') ?>">
                             <?= $result->getCreatedAt()->format('M j, Y g:i A') ?>
@@ -77,7 +77,10 @@ ob_start();
                         <td>
                             <span class="badge bg-success"><?= $result->getDisplayScore() ?: $result->getScore() ?></span>
                         </td>
-                        <td>
+                    </tr>
+                    <!-- Details row -->
+                    <tr class="details-row">
+                        <td colspan="5" class="details-cell">
                             <div class="game-body"><?= htmlspecialchars($result->getBody()) ?></div>
                         </td>
                     </tr>
