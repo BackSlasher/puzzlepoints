@@ -169,8 +169,8 @@ class GameResultParser
                     $hints += substr_count($resultLine, '💡');
                 }
 
-                // Convert to "higher is better": use large number - hints (so 0 hints = 1000, 5 hints = 995)
-                $numericScore = 1000 - $hints;
+                // Use negative scoring: perfect = 0, 1 hint = -1, etc. (higher is better)
+                $numericScore = -$hints;
                 $displayScore = $hints === 0 ? "Perfect!" : "$hints hints";
 
                 return [
