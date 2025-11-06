@@ -253,8 +253,8 @@ class GameResultParser
                 $rankTitle = null;
 
                 foreach ($lines as $checkLine) {
-                    // Parse date line (e.g., "September 3, 2025")
-                    if (preg_match('/^(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d+),\s+(\d{4})$/i', $checkLine, $dateMatches)) {
+                    // Parse date line (e.g., "September 3, 2025" or "November 6, 2025 🔴 (Tough)")
+                    if (preg_match('/^(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d+),\s+(\d{4})/i', $checkLine, $dateMatches)) {
                         $month = date('m', strtotime($dateMatches[1]));
                         $day = str_pad($dateMatches[2], 2, '0', STR_PAD_LEFT);
                         $year = $dateMatches[3];
