@@ -41,7 +41,8 @@ class GameResultParser
                      $this->parseStrands($lines) ??
                      $this->parseMiniCrossword($lines) ??
                      $this->parseSpellingBee($lines) ??
-                     $this->parseBracketCity($lines);
+                     $this->parseBracketCity($lines) ??
+                     $this->parseCatfishing($lines);
 
             if ($result) {
                 $puzzleInputLog->setParsedSuccessfully(true)
@@ -303,6 +304,42 @@ class GameResultParser
                 }
             }
         }
+        return null;
+    }
+
+    private function parseCatfishing(array $lines): ?array
+    {
+        $foundCatfishing = false;
+        $puzzleNumber = null;
+        $score = null;
+
+        foreach ($lines as $line) {
+            // Look for "catfishing.net" header
+            if (preg_match('/^catfishing\.net$/i', $line)) {
+                $foundCatfishing = true;
+            }
+            // Look for puzzle number and score: "#551 - 5/10" or "#551 - 0.5/10"
+            if (preg_match('/^#(\d+)\s*-\s*([0-9.]+)\/10$/i', $line, $matches)) {
+                $puzzleNumber = $matches[1];
+                $score = (float)$matches[2];
+            }
+        }
+
+        if ($foundCatfishing && $puzzleNumber !== null && $score !== null) {
+            // Score is already "higher is better" (X/10)
+            // Multiply by 10 to store as integer (5/10 -> 50, 0.5/10 -> 5)
+            $numericScore = (int)($score * 10);
+            $displayScore = "$score/10";
+
+            return [
+                'gameType' => GameType::CATFISHING,
+                'puzzleNumber' => $puzzleNumber,
+                'score' => $numericScore,
+                'displayScore' => $displayScore,
+                'body' => implode("\n", $lines)
+            ];
+        }
+
         return null;
     }
 

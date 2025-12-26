@@ -78,6 +78,7 @@ ob_start();
                     <li class="mb-2"><i class="bi bi-check-circle-fill text-success"></i> Mini Crossword</li>
                     <li class="mb-2"><i class="bi bi-check-circle-fill text-success"></i> Spelling Bee</li>
                     <li class="mb-2"><i class="bi bi-check-circle-fill text-success"></i> Bracket City</li>
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success"></i> Catfishing</li>
                 </ul>
             </div>
         </div>
