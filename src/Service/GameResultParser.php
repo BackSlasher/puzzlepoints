@@ -318,8 +318,8 @@ class GameResultParser
             if (preg_match('/^catfishing\.net$/i', $line)) {
                 $foundCatfishing = true;
             }
-            // Look for puzzle number and score: "#551 - 5/10" or "#551 - 0.5/10"
-            if (preg_match('/^#(\d+)\s*-\s*([0-9.]+)\/10$/i', $line, $matches)) {
+            // Look for puzzle number and score: "#551 - 5/10" or "#551 - 0.5/10" or "#708 - 8/10 🎉"
+            if (preg_match('/^#(\d+)\s*-\s*([0-9.]+)\/10/i', $line, $matches)) {
                 $puzzleNumber = $matches[1];
                 $score = (float)$matches[2];
             }
