@@ -314,6 +314,9 @@
                 <h1><i class="bi bi-bullseye"></i> PuzzlePoints</h1>
             </div>
             <nav class="nav">
+                <a href="/" class="btn btn-outline-light">
+                    <i class="bi bi-person-circle"></i> My Summary
+                </a>
                 <a href="/input" class="btn btn-outline-light">
                     <i class="bi bi-plus-circle"></i> Submit Results
                 </a>

@@ -135,10 +135,8 @@ class InputController
             header("Location: /input");
             exit;
         } else {
-            // Default behavior: redirect to game results page
-            $gameTypeName = $parsedResult['gameType']->value;
-            $puzzleNumber = $parsedResult['puzzleNumber'];
-            header("Location: /results/$gameTypeName/$puzzleNumber");
+            // Default behavior: show the user's summary, which includes this puzzle's rank
+            header('Location: /');
             exit;
         }
     }
